@@ -15,5 +15,14 @@
 
 - need to work on:
     - escape sequences (ignore state I think)
-    - comments?
-    - strings
+        - \n = end-of-line [Done? More Tests]
+        - \t = Tab [Done? More Tests]
+        - \^c = Control Characters [Done? More Tests]
+            - \^? gives illegal control character in reference; Backspaces in our implementation
+        - \ddd = Character with ASCII code ddd 0-255 [begun but definitely not working, also no error handling yet; Line 121]
+        - \" = Double quote [Done? More Tests]
+        - \\ = Backslash character [Done? More Tests]
+        - \f___f\ = f___f is formatting characters, ignore [not attempted, kinda scared]
+        - Backslashes are also escape characters in reg ex, must escape in tiger.lex
+    - comments? [Done? More Tests]
+    - strings [Done after Escape? More Tests]

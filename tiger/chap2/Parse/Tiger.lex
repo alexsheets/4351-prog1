@@ -41,6 +41,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 private String string;
 private char c;
 private int nestCount = 0;
+private java_cup.runtime.Symbol tempTok;
 
 %}
 
@@ -104,11 +105,24 @@ private int nestCount = 0;
 <YYINITIAL> [a-zA-Z][a-zA-Z0-9_]* { return tok(sym.ID, yytext()); }
 <YYINITIAL> [0-9]+ { return tok(sym.INT, new Integer(yytext())); }
 
+<YYINITIAL> \" {yybegin(STRING); string = ""; tempTok = tok(sym.STRING, null);}
 <YYINITIAL> "/*" {yybegin(COMMENT); nestCount++;}
+
+
 <COMMENT> "/*" {nestCount++; yybegin(COMMENT);}
-<COMMENT> "*/" {nestCount--; if (nestCount = 0) {yybegin(YYINITIAL);}}
+<COMMENT> "*/" {nestCount--; if (nestCount == 0) {yybegin(YYINITIAL);}}
 <COMMENT> . {}
 
+<STRING> "\^"[@-_] {c = (char)(yytext().charAt(2) - '@'); string = string + c;}
+<STRING> "\^"[a-z] {c = (char)(yytext().charAt(2) - '`'); string = string + c;}
+<STRING> "\^?" {c = (char)(yytext().charAt(2) + '@'); string = string + c;}
+<STRING> "\n" {newline(); string = string + "\n";}
+<STRING> "\t" {newline(); string = string + "\t";}
+<STRING> \\[0-9][0-9][0-9] {c = (char)(Integer.parseInt(yytext().substring(1,3))); string = string + c;}
+<STRING> \\\" {string = string + (char)34;}
+<STRING> \\\\ {string = string + "\\";}
+<STRING> \" {yybegin(YYINITIAL); tempTok.value = string; return tempTok;}
+<STRING> . {string = string + yytext();}
 
 
 . { err("Illegal character: " + yytext()); }

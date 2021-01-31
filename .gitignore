@@ -1,4 +1,6 @@
 .env
 *.class
 *.tig
+*.bat
+*.lnk
 Yylex.java
