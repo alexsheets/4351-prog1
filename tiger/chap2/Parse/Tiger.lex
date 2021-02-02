@@ -118,7 +118,19 @@ private java_cup.runtime.Symbol tempTok;
 <STRING> "\^?" {c = (char)(yytext().charAt(2) + '@'); string = string + c;}
 <STRING> "\n" {newline(); string = string + "\n";}
 <STRING> "\t" {newline(); string = string + "\t";}
-<STRING> \\[0-9][0-9][0-9] {c = (char)(Integer.parseInt(yytext().substring(1,3))); string = string + c;}
+<STRING> \\[0-9][0-9][0-9] {
+  // c = (char)(Integer.parseInt(yytext().substring(1,3))); 
+  // string = string + c;
+
+  StringBuffer numStr = new StringBuffer(yytext());
+  int num;
+  char ch;
+
+  numStr = numStr.substring(1, numStr.length());
+  num = Integer.parseInt(string);
+  ch = (char) num;
+  string = string + ch;
+}
 <STRING> \\\" {string = string + (char)34;}
 <STRING> \\\\ {string = string + "\\";}
 <STRING> \" {yybegin(YYINITIAL); tempTok.value = string; return tempTok;}
