@@ -127,7 +127,7 @@ private java_cup.runtime.Symbol tempTok;
   char ch;
 
   numStr = numStr.substring(1, numStr.length());
-  num = Integer.parseInt(string);
+  num = Integer.parseInt(numStr);
   ch = (char) num;
   string = string + ch;
 }
