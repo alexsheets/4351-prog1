@@ -128,8 +128,13 @@ private java_cup.runtime.Symbol tempTok;
 
   numStr = numStr.substring(1, numStr.length());
   num = Integer.parseInt(numStr);
-  ch = (char) num;
-  string = string + ch;
+  if (num < 256) {
+    ch = (char) num;
+    string = string + ch;
+  }
+  else {
+    err("NUM TOO LARGE");
+  }
 }
 <STRING> \\\" {string = string + (char)34;}
 <STRING> \\\\ {string = string + "\\";}
