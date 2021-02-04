@@ -59,6 +59,8 @@ private java_cup.runtime.Symbol tempTok;
 
 <YYINITIAL> " "	{}
 <YYINITIAL> \n	{newline();}
+<YYINITIAL> \r {}
+<YYINITIAL> \t {}
 
 <YYINITIAL> "while" {return tok(sym.WHILE);}
 <YYINITIAL> "for" {return tok(sym.FOR);}
@@ -122,12 +124,12 @@ private java_cup.runtime.Symbol tempTok;
   // c = (char)(Integer.parseInt(yytext().substring(1,3))); 
   // string = string + c;
 
-  StringBuffer numStr = new StringBuffer(yytext());
+  StringBuffer numStr = new StringBuffer(yytext().substring(1, yytext().length()));
   int num;
   char ch;
 
-  numStr = numStr.substring(1, numStr.length());
-  num = Integer.parseInt(numStr);
+  //numStr = numStr.substring(1, numStr.length());
+  num = Integer.parseInt(numStr.toString());
   if (num < 256) {
     ch = (char) num;
     string = string + ch;
@@ -139,7 +141,18 @@ private java_cup.runtime.Symbol tempTok;
 <STRING> \\\" {string = string + (char)34;}
 <STRING> \\\\ {string = string + "\\";}
 <STRING> \" {yybegin(YYINITIAL); tempTok.value = string; return tempTok;}
+<STRING> \\ {yybegin(IGNORE);}
 <STRING> . {string = string + yytext();}
 
+<IGNORE> " " {}
+<IGNORE> "\n" {}
+<IGNORE> \n {}
+<IGNORE> "\t" {}
+<IGNORE> \t {}
+<IGNORE> "\r" {}
+<IGNORE> \r {}
+<IGNORE> "\^"[I-M] {}
+<IGNORE> "\^"[i-m] {}
+<IGNORE> \\ {yybegin(STRING);}
 
 . { err("Illegal character: " + yytext()); }
