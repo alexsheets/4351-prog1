@@ -1,28 +1,31 @@
+- Group Members
+    - Cameron Martin
+    - Alex Sheets
+
 - in third section of Tiger.lex:
-    - bulk of code will go here
-    - code in form of a reg ex., followed by Java code in curly braces.
+    - bulk of code here
+    - code in form of a reg ex., followed by Java code in curly braces
     - could add other regular expressions for other tokens we have
-    - repeat the lines there for all special characters as well as all keyboards
     - gets more complicated with identifiers or other stuff, like comments, etc.
+        - comments use counter to determine level during nesting
+        - strings implemented using STRING state
+        - ignore escape sequence implemented using IGNORE state
 - YY-initial:
     - JLex recognizes each token in one piece.
     - for comments/strings, recognize them in multiple pieces; will need %STATE declarations
     - <YYINITIAL>
 
-- to run the analyzer, I believe we need to do what make does; so run if that works, if not, type out the second command (java JLex.Main Tiger.lex)
-- then use cat > test.tig, or name it whatever, write some stuff
-- then use java Parse.Main test.tig
-
-- need to work on:
+- Implemented
     - escape sequences
-        - \n = end-of-line [Done? More Tests]
-        - \t = Tab [Done? More Tests]
-        - \\\^c = Control Characters [Done? More Tests]
-            - \^? gives illegal control character in reference; Backspaces in our implementation
-        - \ddd = Character with ASCII code ddd 0-255 [Done? More Tests]
-        - \\\" = Double quote [Done? More Tests]
-        - \\\\ = Backslash character [Done? More Tests]
-        - \f___f\ = f___f is formatting characters, ignore [Done? More Tests]
-        - Backslashes are also escape characters in reg ex, must escape in tiger.lex
-    - comments? [Done? More Tests]
-    - strings [Done? More Tests]
+        - \n = end-of-line
+        - \t = Tab
+        - \^c = Control Characters
+        - \ddd = Character with ASCII code ddd 0-255
+        - \" = Double quote
+        - \\ = Backslash character
+        - \f___f\ = f___f is formatting characters, ignore
+    - comments
+    - strings
+    - keywords
+    - ints
+    - IDs
